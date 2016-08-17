@@ -1,31 +1,31 @@
-#How to use HFC with Bluemix networks
+#How to use hfc with Bluemix networks
 
-The goal is to run `helloblockchain.js` sample program, which will deploy example02 chaincode and query/invoke it.
+The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) sample program, which will deploy example02 chaincode and query/invoke it.
 
-1. Install HFC v0.5.0:
+1. Install npm, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
+
+1. Install hfc v0.5.0:
 
 	```
 	> npm install hfc@0.5.0
 	```
 
-1. Get the Service credentials from your Bluemix account and save it as ServiceCredentials.json 
-	- Refer the sample file available in the (repo)[https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json]
-
+1. Get the Service credentials from Buemix account and save as ServiceCredentials.json 
+	- Refer the sample file in [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
      ![alt tag](servicecreds.png)
-
 1. Browse to `./node_modules/hfc` (this will be referred to as the "root" of the hfc module)
-
-1. If you are running your program on HSBN network, make sure you have added environment variable `GRPC_SSL_CIPHER_SUITES` to your program
-
-`// Creating an environment variable for ciphersuites
-process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';`
 
 1. Open `helloblockchain.js` and look for what you are setting as the "key value store" ie `chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));`
 	1. Find your key value store locally and make sure the path to the folder exists
 		- (in windows default is) C:\tmp\keyValStore
-	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users)
+	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
 
-1. Create `$GOPATH/src/github.com/chaincode_example02` folder
+1. If you are using HSBN Network, make sure you have set the environmental variable `GRPC_SSL_CIPHER_SUITES`
+`
+process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+`
+
+1. Create `$GOPATH/src/github.com/chaincode_example02` folderGRPC_SSL_CIPHER_SUITES
 	- copy `chaincode_example02.go` from [here](https://github.com/hyperledger/fabric/blob/master/examples/chaincode/go/chaincode_example02/chaincode_example02.go)
 
 1. Copy the `vendor.7z` file from this repo  to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
