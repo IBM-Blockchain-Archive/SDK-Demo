@@ -10,9 +10,11 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	> npm install hfc@0.5.0
 	```
 
-1. Get the Service Credentials from Buemix account and save as ServiceCredentials.json 
-	- Refer the sample file in [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
+1. Create a Bluemix account, Login and create `starter` or `High Security Business Network` and get the `Service Credentials` from Buemix account and save it as ServiceCredentials.json 
+	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
+
      ![alt tag](servicecreds.png)
+
 1. Browse to `./node_modules/hfc` (this will be referred to as the "root" of the hfc module)
 
 1. Open `helloblockchain.js` and look for what you are setting as the "key value store" ie `chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));`
@@ -41,7 +43,7 @@ If you are using HSBN Network, make sure you have set the `GRPC_SSL_CIPHER_SUITE
 process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
 
 ```
-Success looks like:
+Once Deploy/Invoke and Query are successful, we should see the below messages:
 
 ```
 Successfully deployed chaincode: request={"fcn":"init","args":["a","100","b","200"],"certificatePath":"/certs/blockchain-cert.pem","chaincodePath":"github.com/chaincode_example02/"}, response={"uuid":"2d6ad8d6-1390-4c60-a01b-f4c301175eb7","chaincodeID":"9be0a0ed3f1788e8728c8911c747d2f6d0e205fa63422dc598d498fe709b9b8d","result":"TODO: get actual results; waited 120 seconds and assumed deploy was successful"}
