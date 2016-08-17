@@ -29,8 +29,9 @@ To reiterate what has just been stated:
 		- (in windows default is) C:\tmp\keyValStore
 	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
 
-1. Create `$GOPATH/src/github.com/chaincode_example02`
-	- copy `chaincode_example02.go` from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
+1. Create folder `$GOPATH/src/github.com/chaincode_example02`
+	- `mkdir -p $GOPATH/src/github.com/chaincode_example02`
+	- copy `chaincode_example02.go` to this folder from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
 1. Copy the `vendor.zip` file from this repo to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
 	- delete `vendor.zip`
