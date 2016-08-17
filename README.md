@@ -1,4 +1,4 @@
-#How to use hfc with Bluemix networks
+#How to use hfc with the IBM Bluemix Blockchain beta service
 
 The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) sample program, which will deploy example02 chaincode and query/invoke it.
 
@@ -10,7 +10,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	> npm install hfc@0.5.0
 	```
 
-1. Get the Service credentials from Buemix account and save as ServiceCredentials.json 
+1. Get the Service Credentials from Buemix account and save as ServiceCredentials.json 
 	- Refer the sample file in [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
      ![alt tag](servicecreds.png)
 1. Browse to `./node_modules/hfc` (this will be referred to as the "root" of the hfc module)
@@ -20,12 +20,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 		- (in windows default is) C:\tmp\keyValStore
 	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
 
-1. If you are using HSBN Network, make sure you have set the environmental variable `GRPC_SSL_CIPHER_SUITES`
-`
-process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
-`
-
-1. Create `$GOPATH/src/github.com/chaincode_example02` folderGRPC_SSL_CIPHER_SUITES
+1. Create `$GOPATH/src/github.com/chaincode_example02`
 	- copy `chaincode_example02.go` from [here](https://github.com/hyperledger/fabric/blob/master/examples/chaincode/go/chaincode_example02/chaincode_example02.go)
 
 1. Copy the `vendor.7z` file from this repo  to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
@@ -36,6 +31,15 @@ process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-A
 ```
 	> set DEBUG=hfc
 	> node helloblockchain.js -c $GOPATH/go/src/github.com/chaincode_example02
+
+
+
+NOTE:
+
+If you are using HSBN Network, make sure you have set the `GRPC_SSL_CIPHER_SUITES` environmental variable in your node program
+
+process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+
 ```
 Success looks like:
 
