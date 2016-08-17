@@ -8,8 +8,9 @@ The goal is to run `helloblockchain.js` sample program, which will deploy exampl
 	> npm install hfc@0.5.0
 	```
 
-1. Get the Network credentials and save as ServiceCredentials.json (Refer the sample file in repo)
-
+1. Get the Service credentials from Buemix account and save as ServiceCredentials.json 
+	- Refer the sample file in (repo)[https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json]
+     ![alt tag](servicecreds.png)
 1. Browse to `./node_modules/hfc` (this will be referred to as the "root" of the hfc module)
 
 1. Open `helloblockchain.js` and look for what you are setting as the "key value store" ie `chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));`
