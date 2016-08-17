@@ -4,18 +4,20 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
 1. Install npm, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
 
-1. Install hfc v0.5.0:
+1. Create a directory (Workspace) folder where you will place the helloblockchain.js source code and node modules.  For example, `mkdir -p $HOME/Workspace`
+
+1. Go to Workspace folder and Install hfc v0.5.0 with the below command:
 
 	```
-	> npm install hfc@0.5.0
+	cd $HOME/Workspace
+	npm install hfc@0.5.0
 	```
+1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) and save it Worspace folder.  
 
 1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js)
 	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
 
      ![alt tag](servicecreds.png)
-
-1. Browse to `./node_modules/hfc` (this will be referred to as the "root" of the hfc module)
 
 1.  Please ensure you have a /tmp directory and the program can access this directory. Now, open the source code `helloblockchain.js` and search for: setKeyValStore.  The helloblockchain.js program sets this to /tmp/KeyValStore.  The node sdk will create the keyValStore directory and store cryptography data for each user that registers.
 
@@ -28,10 +30,10 @@ To reiterate what has just been stated:
 1. Create `$GOPATH/src/github.com/chaincode_example02`
 	- copy `chaincode_example02.go` from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
-1. Copy the `vendor.zip` file from this repo  to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
+1. Copy the `vendor.zip` file from this repo to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
 	- delete `vendor.zip`
 
-1. From root of hfc module run:
+1. From Workspace folder run node program:
 	
 ```
 	> set DEBUG=hfc
