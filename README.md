@@ -12,10 +12,10 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	cd $HOME/Workspace
 	npm install hfc@0.5.0
 	```
-   In looks something like below:
+   It looks something like below:
    ![alt tag](workspace.png)
 
-1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) and save it Workspace folder.  
+1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) and save it your Workspace folder.  
 
 1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js)
 	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
@@ -23,7 +23,6 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
      ![alt tag](servicecreds.png)
 
 1.  Please ensure you have a /tmp directory and the program can access this directory. Now, open the source code `helloblockchain.js` and search for: setKeyValStore.  The helloblockchain.js program sets this to /tmp/KeyValStore.  The node sdk will create the keyValStore directory and store cryptography data for each user that registers.
-
 Note: The contents in the KeyValStore directory should be deleted when connecting to a different fabric.  
 To reiterate what has just been stated: 
 	1. Find your key value store locally and make sure the path to the folder exists
