@@ -28,8 +28,8 @@ To reiterate what has just been stated:
 1. Create `$GOPATH/src/github.com/chaincode_example02`
 	- copy `chaincode_example02.go` from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
-1. Copy the `vendor.7z` file from this repo  to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
-	- delete `vendor.7z`
+1. Copy the `vendor.zip` file from this repo  to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
+	- delete `vendor.zip`
 
 1. From root of hfc module run:
 	
