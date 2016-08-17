@@ -64,7 +64,7 @@ Failed to query chaincode, function: request={"chaincodeID":"9be0a0ed3f1788e8728
 
   increase deploy wait time
 
-`chain.setDeployWaitTime(80);`
+  `chain.setDeployWaitTime(80);`
 
 - if you get a handshake error, try a different `grpc` version
 - if you cannot npm install the hfc module, remove sleep dependency in package.json and delete node_modules/sleep if it exists
