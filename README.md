@@ -21,7 +21,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
 
 1. Create `$GOPATH/src/github.com/chaincode_example02`
-	- copy `chaincode_example02.go` from [here](https://github.com/hyperledger/fabric/blob/master/examples/chaincode/go/chaincode_example02/chaincode_example02.go)
+	- copy `chaincode_example02.go` from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
 1. Copy the `vendor.7z` file from this repo  to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
 	- delete `vendor.7z`
