@@ -38,8 +38,8 @@ To reiterate what has just been stated:
 1. From Workspace folder run node program:
 	
 ```
-	> set DEBUG=hfc
-	> node helloblockchain.js -c $GOPATH/go/src/github.com/chaincode_example02
+	set DEBUG=hfc
+	node helloblockchain.js -c $GOPATH/go/src/github.com/chaincode_example02
 
 
 
