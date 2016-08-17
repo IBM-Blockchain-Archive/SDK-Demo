@@ -17,7 +17,10 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
 1. Browse to `./node_modules/hfc` (this will be referred to as the "root" of the hfc module)
 
-1. Open `helloblockchain.js` and look for what you are setting as the "key value store" ie `chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));`
+1.  Please ensure you have a /tmp directory and the program can access this directory. Now, open the source code `helloblockchain.js` and search for: setKeyValStore.  The helloblockchain.js program sets this to /tmp/KeyValStore.  The node sdk will create the keyValStore directory and store cryptography data for each user that registers.
+
+Note: The contents in the KeyValStore directory should be deleted when connecting to a different fabric.  
+To reiterate what has just been stated: 
 	1. Find your key value store locally and make sure the path to the folder exists
 		- (in windows default is) C:\tmp\keyValStore
 	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
