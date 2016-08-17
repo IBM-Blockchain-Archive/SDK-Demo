@@ -10,7 +10,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	> npm install hfc@0.5.0
 	```
 
-1. Create a Bluemix account, Login and create `starter` or `High Security Business Network` and get the `Service Credentials` from Buemix account and save it as ServiceCredentials.json 
+1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js)
 	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
 
      ![alt tag](servicecreds.png)
