@@ -40,7 +40,7 @@ To reiterate what has just been stated:
 	
 ```
 	set DEBUG=hfc
-	node helloblockchain.js -c $GOPATH/go/src/github.com/chaincode_example02
+	node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
 
 
 
