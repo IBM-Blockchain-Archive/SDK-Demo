@@ -29,18 +29,19 @@ To reiterate what has just been stated:
 		- (in windows default is) C:\tmp\keyValStore
 	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
 
-1. Create folder `$GOPATH/src/github.com/chaincode_example02`
-	- `mkdir -p $GOPATH/src/github.com/chaincode_example02`
-	- copy `chaincode_example02.go` to this folder from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
+1. Create chaincode folder under your Workspace.
+	- `cd $HOME/Workspace`
+	- `mkdir chaincode_example02`
+	- copy `chaincode_example02.go` to this folder,  `chaincode_example02.go` can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
-1. Copy the `vendor.zip` file from this repo to `$GOPATH/src/github.com/chaincode_example02` and **unzip**
+1. Copy the `vendor.zip` file from this repo to `chaincode_example02` folder and **unzip**
 	- delete `vendor.zip`
 
 1. From Workspace folder run node program:
 	
 ```
 	set DEBUG=hfc
-	node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
+	node helloblockchain.js -c $HOME/Workspace/chaincode_example02
 
 
 
@@ -73,7 +74,9 @@ Failed to query chaincode, function: request={"chaincodeID":"9be0a0ed3f1788e8728
   ```
 
   increase deploy wait time
-
+  
+  ex:
+  
   `chain.setDeployWaitTime(80);`
 
 - if you get a handshake error, try a different `grpc` version
