@@ -76,24 +76,36 @@ fs.access(certFile, (err) => {
 function downloadCertificate() {
     https.get(certUrl, (res) => {
         console.log('\nDownloading certificate ', certFile);
-
         res.on('data', (d) => {
             fs.appendFile(certFile, d, (err) => {
                 if (err) throw err;
             });
         });
+        // event received when certificate download is completed
         res.on('end', function() {
+          if (process.platform == "win32") {
+            copyCertificate();
+          } else {
+            // Adding a new line character to the certificates
             fs.appendFile(certFile, "\n", (err) => {
                 if (err) throw err;
-                //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
-                fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync('certificate.pem'));
-                enrollAndRegisterUsers();
+                copyCertificate();
             });
+          }
         });
     }).on('error', (e) => {
         console.error(e);
         process.exit();
     });
+}
+
+function copyCertificate(){
+  //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
+  fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync('certificate.pem'));
+
+  setTimeout(function(){
+    enrollAndRegisterUsers();
+  },1000);
 }
 
 function enrollAndRegisterUsers() {
