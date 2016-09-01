@@ -29,8 +29,8 @@ To reiterate what has just been stated:
 		- (in windows default is) C:\tmp\keyValStore
 	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
 
-1. Create chaincode folder under your Workspace.
-	- `cd $HOME/Workspace`
+1. Create chaincode folder under your $GOPATH.
+	- `cd $GOPATH/src/github.com/`
 	- `mkdir chaincode_example02`
 	- copy `chaincode_example02.go` to this folder,  `chaincode_example02.go` can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
@@ -38,15 +38,21 @@ To reiterate what has just been stated:
 	- delete `vendor.zip`
 
 1. From Workspace folder run node program:
-	
-```
-	set DEBUG=hfc
+	```
 	node helloblockchain.js -c $HOME/Workspace/chaincode_example02
+	```
+	**To enable debug logs :**
+	```
+	DEBUG=hfc node helloblockchain.js -c $HOME/Workspace/chaincode_example02
+	```
 
+	**To enable grpc traces:**
+	```
+	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c $HOME/Workspace/chaincode_example02
+	```
 
-
+```
 NOTE:
-
 If you are using HSBN Network, make sure you have set the `GRPC_SSL_CIPHER_SUITES` environmental variable in your node program
 
 process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
@@ -67,6 +73,9 @@ Successfully queried  chaincode function: request={"chaincodeID":"9be0a0ed3f1788
 ***
 
 #Troubleshoot
+- Make sure you have `hfc@0.5.0` with either of the below commands from your workspace dir
+  * npm list | grep hfc
+  * npm list -g | grep hfc  # If installed using -g flag
 - if you get query failure error as below. 
 
   ```
@@ -74,11 +83,9 @@ Failed to query chaincode, function: request={"chaincodeID":"9be0a0ed3f1788e8728
   ```
 
   increase deploy wait time
-  
-  ex:
-  
-  `chain.setDeployWaitTime(80);`
+  ex: `chain.setDeployWaitTime(80);`
 
 - if you get a handshake error, try a different `grpc` version
-- if you cannot npm install the hfc module, remove sleep dependency in package.json and delete node_modules/sleep if it exists
-
+  * You can get the version details by issuing either of the below commands
+    - `npm list | grep grpc`
+    - `npm list -g | grep grpc`
