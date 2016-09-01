@@ -39,16 +39,16 @@ To reiterate what has just been stated:
 
 1. From Workspace folder run node program:
 	```
-	node helloblockchain.js -c $HOME/Workspace/chaincode_example02
+	node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
 	```
 	**To enable debug logs :**
 	```
-	DEBUG=hfc node helloblockchain.js -c $HOME/Workspace/chaincode_example02
+	DEBUG=hfc node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
 	```
 
 	**To enable grpc traces:**
 	```
-	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c $HOME/Workspace/chaincode_example02
+	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
 	```
 
 ```
