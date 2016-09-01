@@ -34,7 +34,7 @@ To reiterate what has just been stated:
 	- `mkdir chaincode_example02`
 	- copy `chaincode_example02.go` to this folder,  `chaincode_example02.go` can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
-1. Copy the `vendor.zip` file from this repo to `chaincode_example02` folder and **unzip**
+1. Download [vendor.zip](https://github.com/ratnakar-asara/Node-Sample/raw/master/vendor.zip) and copy the same to `chaincode_example02` folder and **unzip**
 	- delete `vendor.zip`
 
 1. From Workspace folder run node program:
