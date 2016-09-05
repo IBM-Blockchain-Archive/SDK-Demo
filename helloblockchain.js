@@ -74,15 +74,16 @@ fs.access(certFile, (err) => {
 });
 
 function downloadCertificate() {
+    var file = fs.createWriteStream(certFile);
     https.get(certUrl, (res) => {
-        console.log('\nDownloading certificate ', certFile);
-        res.on('data', (d) => {
-            fs.appendFile(certFile, d, (err) => {
-                if (err) throw err;
-            });
-        });
+        console.log('\nDownloading %s from %s', certFile, certUrl);
+        if (res.statusCode !== 200) {
+            console.log('\nDownload certificate failed, error code = %d', certFile, res.statusCode);
+		    process.exit();
+        }
+	    res.pipe(file);
         // event received when certificate download is completed
-        res.on('end', function() {
+        file.on('finish', function() {
           if (process.platform == "win32") {
             copyCertificate();
           } else {
