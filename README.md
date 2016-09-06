@@ -51,13 +51,6 @@ To reiterate what has just been stated:
 	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
 	```
 
-```
-NOTE:
-If you are using HSBN Network, make sure you have set the `GRPC_SSL_CIPHER_SUITES` environmental variable in your node program
-
-process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
-
-```
 Once Deploy/Invoke and Query are successful, we should see the below messages:
 
 ```
