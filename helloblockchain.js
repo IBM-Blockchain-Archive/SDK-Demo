@@ -15,7 +15,14 @@ var chain = hfc.newChain("targetChain");
 chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
 
 // Creating an environment variable for ciphersuites
-process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:' +
+    'ECDHE-RSA-AES128-SHA256:' +
+    'ECDHE-RSA-AES256-SHA384:' +
+    'ECDHE-RSA-AES256-GCM-SHA384:' +
+    'ECDHE-ECDSA-AES128-GCM-SHA256:' +
+    'ECDHE-ECDSA-AES128-SHA256:' +
+    'ECDHE-ECDSA-AES256-SHA384:' +
+    'ECDHE-ECDSA-AES256-GCM-SHA384';
 
 var ccPath;
 if (process.argv.length != 4) {
@@ -58,10 +65,6 @@ var peerAddress = [];
 var network_id = Object.keys(network.credentials.ca);
 var ca_url = "grpcs://" + network.credentials.ca[network_id].discovery_host + ":" + network.credentials.ca[network_id].discovery_port;
 
-if (!isHSBN) {
-    //HSBN uses RSA generated keys
-    chain.setECDSAModeForGRPC(true)
-}
 
 var certFile = 'certificate.pem';
 var certUrl = network.credentials.cert;
