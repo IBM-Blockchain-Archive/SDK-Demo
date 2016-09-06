@@ -79,20 +79,20 @@ function downloadCertificate() {
         console.log('\nDownloading %s from %s', certFile, certUrl);
         if (res.statusCode !== 200) {
             console.log('\nDownload certificate failed, error code = %d', certFile, res.statusCode);
-		    process.exit();
+            process.exit();
         }
-	    res.pipe(file);
+        res.pipe(file);
         // event received when certificate download is completed
         file.on('finish', function() {
-          if (process.platform == "win32") {
-            copyCertificate();
-          } else {
-            // Adding a new line character to the certificates
-            fs.appendFile(certFile, "\n", (err) => {
-                if (err) throw err;
+            if (process.platform == "win32") {
                 copyCertificate();
-            });
-          }
+            } else {
+                // Adding a new line character to the certificates
+                fs.appendFile(certFile, "\n", (err) => {
+                    if (err) throw err;
+                    copyCertificate();
+                });
+            }
         });
     }).on('error', (e) => {
         console.error(e);
@@ -100,13 +100,13 @@ function downloadCertificate() {
     });
 }
 
-function copyCertificate(){
-  //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
-  fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync('certificate.pem'));
+function copyCertificate() {
+    //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
+    fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync('certificate.pem'));
 
-  setTimeout(function(){
-    enrollAndRegisterUsers();
-  },1000);
+    setTimeout(function() {
+        enrollAndRegisterUsers();
+    }, 1000);
 }
 
 function enrollAndRegisterUsers() {
