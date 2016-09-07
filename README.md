@@ -1,6 +1,6 @@
 #How to use hfc with the IBM Bluemix Blockchain beta service
 
-The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) sample program, which will deploy example02 chaincode and query/invoke it.
+The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) sample program, which will deploy example02 chaincode and query/invoke it.
 
 1. Install npm, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
 
@@ -12,12 +12,12 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	cd $HOME/Workspace
 	npm install hfc@0.5.0
 	```
-1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js) and save it your Workspace folder.  
+1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) and save it your Workspace folder.  
    It looks something like below:
 
    ![alt tag](workspace.png)
 
-1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockachain.js)
+1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js)
 	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
 
      ![alt tag](servicecreds.png)
