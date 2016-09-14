@@ -6,14 +6,6 @@ const https = require('https');
 // Create a client blockchin.
 var chain = hfc.newChain("targetChain");
 
-// Configure the KeyValStore which is used to store sensitive keys.
-// This data needs to be located or accessible any time the users enrollmentID
-// perform any functions on the blockchain.  The users are not usable without
-// This data.
-// Please ensure you have a /tmp directory prior to placing the keys there.
-// If running on windows or mac please review the path setting.
-chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
-
 // Creating an environment variable for ciphersuites
 process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:' +
     'ECDHE-RSA-AES128-SHA256:' +
@@ -24,12 +16,12 @@ process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:' +
     'ECDHE-ECDSA-AES256-SHA384:' +
     'ECDHE-ECDSA-AES256-GCM-SHA384';
 
-var ccPath;
+var ccPath = '';
 if (process.argv.length != 4) {
     console.log("Invalid arguments");
-    console.log("USAGE: node helloblockachain.js -c <path-to-chaincode>");
+    console.log("USAGE: node helloblockchain.js -c <chaincode-dir-name>");
     console.log("ex: ");
-    console.log("node helloblockachain.js -c $GOPATH/src/github.com/chaincode_example02");
+    console.log("node helloblockchain.js -c chaincode_example02");
     process.exit();
 }
 process.argv.forEach(function(val, index, array) {
@@ -41,7 +33,8 @@ process.argv.forEach(function(val, index, array) {
             console.log("Invalid arguments")
             process.exit();
         } else {
-            ccPath = val;
+            // This is what done by NodeSdk when it looks for NodeSdk
+            ccPath = process.env["GOPATH"]+"/src/"+val;
         }
     }
 });
@@ -49,7 +42,7 @@ process.argv.forEach(function(val, index, array) {
 // Read and process the credentials.json
 var network;
 try {
-    network = JSON.parse(fs.readFileSync('ServiceCredentials.json', 'utf8'));
+    network = JSON.parse(fs.readFileSync(__dirname+'/ServiceCredentials.json', 'utf8'));
 } catch (err) {
     console.log("ServiceCredentials.json is missing, Rerun once the file is available")
     process.exit();
@@ -65,10 +58,16 @@ var peerAddress = [];
 var network_id = Object.keys(network.credentials.ca);
 var ca_url = "grpcs://" + network.credentials.ca[network_id].discovery_host + ":" + network.credentials.ca[network_id].discovery_port;
 
+// Configure the KeyValStore which is used to store sensitive keys.
+// This data needs to be located or accessible any time the users enrollmentID
+// perform any functions on the blockchain.  The users are not usable without
+// This data.
+var uuid = network_id[0].substring(0,8);
+chain.setKeyValStore(hfc.newFileKeyValStore(__dirname+'/keyValStore-'+uuid));
 
 var certFile = 'certificate.pem';
 var certUrl = network.credentials.cert;
-fs.access(certFile, (err) => {
+fs.access(certFile, function (err) {
     if (!err) {
         console.log("\nDeleting existing certificate ", certFile);
         fs.unlinkSync(certFile);
@@ -78,26 +77,34 @@ fs.access(certFile, (err) => {
 
 function downloadCertificate() {
     var file = fs.createWriteStream(certFile);
-    https.get(certUrl, (res) => {
+    var data = '';
+    https.get(certUrl, function (res) {
         console.log('\nDownloading %s from %s', certFile, certUrl);
         if (res.statusCode !== 200) {
             console.log('\nDownload certificate failed, error code = %d', certFile, res.statusCode);
             process.exit();
         }
-        res.pipe(file);
+        res.on('data', function(d) {
+                data += d;
+        });
         // event received when certificate download is completed
-        file.on('finish', function() {
-            if (process.platform == "win32") {
+        res.on('end', function() {
+	    if (process.platform != "win32") {
+		data += '\n';
+	    }
+            fs.writeFileSync(certFile, data);
+	    copyCertificate();
+            /*if (process.platform == "win32") {
                 copyCertificate();
             } else {
                 // Adding a new line character to the certificates
-                fs.appendFile(certFile, "\n", (err) => {
+                fs.appendFile(certFile, "\n", function (err) {
                     if (err) throw err;
                     copyCertificate();
                 });
-            }
+            }*/
         });
-    }).on('error', (e) => {
+    }).on('error', function (e) {
         console.error(e);
         process.exit();
     });
@@ -105,7 +112,7 @@ function downloadCertificate() {
 
 function copyCertificate() {
     //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
-    fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync('certificate.pem'));
+    fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync(__dirname+'/certificate.pem'));
 
     setTimeout(function() {
         enrollAndRegisterUsers();
@@ -172,7 +179,7 @@ function deployChaincode(user) {
         // the location where the startup and HSBN store the certificates
         certificatePath: isHSBN ? "/root/" : "/certs/blockchain-cert.pem"
     };
-    deployRequest.chaincodePath = "github.com/chaincode_example02/";
+    deployRequest.chaincodePath = "chaincode_example02";
 
     // Trigger the deploy transaction
     var deployTx = user.deploy(deployRequest);

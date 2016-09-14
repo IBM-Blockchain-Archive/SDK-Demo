@@ -12,49 +12,45 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	cd $HOME/Workspace
 	npm install hfc@0.5.0
 	```
-1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) and save it your Workspace folder.  
-   It looks something like below:
-
-   ![alt tag](workspace.png)
 
 1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js)
 	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
 
      ![alt tag](servicecreds.png)
 
-1.  Please ensure you have a /tmp directory and the program can access this directory. Now, open the source code `helloblockchain.js` and search for: setKeyValStore.  The helloblockchain.js program sets this to /tmp/KeyValStore.  The node sdk will create the keyValStore directory and store cryptography data for each user that registers.
-Note: The contents in the KeyValStore directory should be deleted when connecting to a different fabric.  
-To reiterate what has just been stated: 
-	1. Find your key value store locally and make sure the path to the folder exists
-		- (in windows default is) C:\tmp\keyValStore
-	1. Also delete anything in this `keyValStore` folder (you should empty this out anytime you connect to a new network or switch users) 
+1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) and save it your Workspace folder.
+   It looks something like below:
+
+   ![alt tag](workspace.png)
+
+1.  The node sdk will create the keyValStore directory and store cryptography data for each user that registers.
 
 1. Create chaincode folder under your $GOPATH.
-	- `cd $GOPATH/src/github.com/`
+	- `mkdir -p $GOPATH/src/chaincode_example02`
 	- `mkdir chaincode_example02`
-	- copy `chaincode_example02.go` to this folder,  `chaincode_example02.go` can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
+	- copy chaincode file `chaincode_example02.go` to folder `$GOPATH/src/chaincode_example02`, the same can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
 1. Download [vendor.zip](https://github.com/ratnakar-asara/Node-Sample/raw/master/vendor.zip) and copy the same to `chaincode_example02` folder and **unzip**
 	- delete `vendor.zip`
 
 1. From Workspace folder run node program:
 	```
-	node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
+	node helloblockchain.js -c chaincode_example02
 	```
 	**To enable debug logs :**
 	```
-	DEBUG=hfc node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
+	DEBUG=hfc node helloblockchain.js -c chaincode_example02
 	```
 
 	**To enable grpc traces:**
 	```
-	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c $GOPATH/src/github.com/chaincode_example02
+	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c chaincode_example02
 	```
 
 Once Deploy/Invoke and Query are successful, we should see the below messages:
 
 ```
-Successfully deployed chaincode: request={"fcn":"init","args":["a","100","b","200"],"certificatePath":"/certs/blockchain-cert.pem","chaincodePath":"github.com/chaincode_example02/"}, response={"uuid":"2d6ad8d6-1390-4c60-a01b-f4c301175eb7","chaincodeID":"9be0a0ed3f1788e8728c8911c747d2f6d0e205fa63422dc598d498fe709b9b8d","result":"TODO: get actual results; waited 120 seconds and assumed deploy was successful"}
+Successfully deployed chaincode: request={"fcn":"init","args":["a","100","b","200"],"certificatePath":"/certs/blockchain-cert.pem","chaincodePath":"chaincode_example02"}, response={"uuid":"2d6ad8d6-1390-4c60-a01b-f4c301175eb7","chaincodeID":"9be0a0ed3f1788e8728c8911c747d2f6d0e205fa63422dc598d498fe709b9b8d","result":"TODO: get actual results; waited 120 seconds and assumed deploy was successful"}
 
 Successfully submitted chaincode invoke transaction: request={"chaincodeID":"9be0a0ed3f1788e8728c8911c747d2f6d0e205fa63422dc598d498fe709b9b8d","fcn":"invoke","args":["a","b","1"]}, response={"uuid":"f9a902d2-44d8-4b68-b43d-419470ba73ae"}
 
