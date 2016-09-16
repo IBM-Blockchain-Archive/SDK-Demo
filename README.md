@@ -6,11 +6,11 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
 1. Create a directory (Workspace) folder where you will place the helloblockchain.js source code and node modules.  For example, `mkdir -p $HOME/Workspace`
 
-1. Go to Workspace folder and Install hfc v0.5.0 with the below command:
+1. Go to Workspace folder and Install hfc v0.5.3 with the below command:
 
 	```
 	cd $HOME/Workspace
-	npm install hfc@0.5.0
+	npm install hfc@0.5.3
 	```
 
 1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js)
@@ -62,7 +62,7 @@ Successfully queried  chaincode function: request={"chaincodeID":"9be0a0ed3f1788
 ***
 
 #Troubleshoot
-- Make sure you have `hfc@0.5.0` with either of the below commands from your workspace dir
+- Make sure you have `hfc@0.5.3` with either of the below commands from your workspace dir
   * npm list | grep hfc
   * npm list -g | grep hfc  # If installed using -g flag
 - if you get query failure error as below. 
