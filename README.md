@@ -27,7 +27,6 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
 1. Create chaincode folder under your $GOPATH.
 	- `mkdir -p $GOPATH/src/chaincode_example02`
-	- `mkdir chaincode_example02`
 	- copy chaincode file `chaincode_example02.go` to folder `$GOPATH/src/chaincode_example02`, the same can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
 
 1. Download [vendor.zip](https://github.com/ratnakar-asara/Node-Sample/raw/master/vendor.zip) and copy the same to `chaincode_example02` folder and **unzip**
