@@ -13,12 +13,12 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 	npm install hfc@0.5.3
 	```
 
-1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js)
-	- Refer the sample file in repo [here](https://github.com/ratnakar-asara/Node-Sample/blob/master/ServiceCredentials.json)
+1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/helloblockchain.js)
+	- Refer the sample file in repo [here](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/ServiceCredentials.json)
 
      ![alt tag](servicecreds.png)
 
-1. Download [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) and save it your Workspace folder.
+1. Download [helloblockchain.js](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/helloblockchain.js) and save it your Workspace folder.
    It looks something like below:
 
    ![alt tag](workspace.png)
@@ -27,9 +27,9 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
 1. Create chaincode folder under your $GOPATH.
 	- `mkdir -p $GOPATH/src/chaincode_example02`
-	- copy chaincode file `chaincode_example02.go` to folder `$GOPATH/src/chaincode_example02`, the same can be obtained from this [repo](https://github.com/ratnakar-asara/Node-Sample/blob/master/chaincode_example02.go)
+	- copy chaincode file [chaincode_example02.go](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/chaincode_example02.go) to folder `$GOPATH/src/chaincode_example02`.
 
-1. Download [vendor.zip](https://github.com/ratnakar-asara/Node-Sample/raw/master/vendor.zip) and copy the same to `chaincode_example02` folder and **unzip**
+1. Download [vendor.zip](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/vendor.zip) and similarly copy to the same folder - `$GOPATH/src/chaincode_example02` and **unzip**
 	- delete `vendor.zip`
 
 1. From Workspace folder run node program:
