@@ -123,22 +123,19 @@ function copyCertificate() {
 
 function enrollAndRegisterUsers() {
     var cert = fs.readFileSync(certFile);
-    /*
+
     chain.setMemberServicesUrl(ca_url, {
         pem: cert
     });
-    */
-    chain.setMemberServicesUrl(ca_url);
+    //chain.setMemberServicesUrl(ca_url);
 
     // Adding all the peers to blockchain
     // this adds high availability for the client
     for (var i = 0; i < peers.length; i++) {
-        /*
         chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port, {
             pem: cert
         });
-        */
-        chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port);
+        //chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port);
     }
 
     console.log("\n\n------------- peers and caserver information: -------------");
