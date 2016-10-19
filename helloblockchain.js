@@ -48,15 +48,15 @@ try {
     process.exit();
 }
 
-var peers = network.credentials.peers;
-var users = network.credentials.users;
+var peers = network.peers;
+var users = network.users;
 
 // Determining if we are running on a startup or HSBN network based on the url
 // of the discovery host name.  The HSBN will contain the string zone.
 var isHSBN = peers[0].discovery_host.indexOf('zone') >= 0 ? true : false;
 var peerAddress = [];
-var network_id = Object.keys(network.credentials.ca);
-var ca_url = "grpcs://" + network.credentials.ca[network_id].discovery_host + ":" + network.credentials.ca[network_id].discovery_port;
+var network_id = Object.keys(network.ca);
+var ca_url = "grpc://" + network.ca[network_id].discovery_host + ":" + network.ca[network_id].discovery_port;
 
 // Configure the KeyValStore which is used to store sensitive keys.
 // This data needs to be located or accessible any time the users enrollmentID
@@ -64,15 +64,17 @@ var ca_url = "grpcs://" + network.credentials.ca[network_id].discovery_host + ":
 // This data.
 var uuid = network_id[0].substring(0,8);
 chain.setKeyValStore(hfc.newFileKeyValStore(__dirname+'/keyValStore-'+uuid));
+chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
 
 var certFile = 'certificate.pem';
-var certUrl = network.credentials.cert;
+var certUrl = network.cert;
 fs.access(certFile, function (err) {
     if (!err) {
-        console.log("\nDeleting existing certificate ", certFile);
-        fs.unlinkSync(certFile);
+        //console.log("\nDeleting existing certificate ", certFile);
+        //fs.unlinkSync(certFile);
     }
-    downloadCertificate();
+    //downloadCertificate();
+    copyCertificate();
 });
 
 function downloadCertificate() {
@@ -121,16 +123,22 @@ function copyCertificate() {
 
 function enrollAndRegisterUsers() {
     var cert = fs.readFileSync(certFile);
+    /*
     chain.setMemberServicesUrl(ca_url, {
         pem: cert
     });
+    */
+    chain.setMemberServicesUrl(ca_url);
 
     // Adding all the peers to blockchain
     // this adds high availability for the client
     for (var i = 0; i < peers.length; i++) {
-        chain.addPeer("grpcs://" + peers[i].discovery_host + ":" + peers[i].discovery_port, {
+        /*
+        chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port, {
             pem: cert
         });
+        */
+        chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port);
     }
 
     console.log("\n\n------------- peers and caserver information: -------------");
@@ -141,8 +149,8 @@ function enrollAndRegisterUsers() {
 
     // Enroll a 'admin' who is already registered because it is
     // listed in fabric/membersrvc/membersrvc.yaml with it's one time password.
-    chain.enroll(users[0].username, users[0].secret, function(err, admin) {
-        if (err) throw Error("\nERROR: failed to enroll admin : %s", err);
+    chain.enroll(users[0].enrollId, users[0].enrollSecret, function(err, admin) {
+        if (err) throw Error("\nERROR: failed to enroll admin : " + err);
 
         console.log("\nEnrolled admin sucecssfully");
 
@@ -152,7 +160,7 @@ function enrollAndRegisterUsers() {
         var enrollName = "JohnDoe"; //creating a new user
         var registrationRequest = {
             enrollmentID: enrollName,
-            account: "group1",
+            account: "bank_a",
             affiliation: "00001"
         };
         chain.registerAndEnroll(registrationRequest, function(err, user) {
@@ -163,7 +171,7 @@ function enrollAndRegisterUsers() {
             //setting timers for fabric waits
             chain.setDeployWaitTime(60);
             chain.setInvokeWaitTime(20);
-            console.log("\nDeploying chaincode ...")
+            console.log("\nDeploying chaincode ...");
             deployChaincode(user);
         });
     });
@@ -177,7 +185,7 @@ function deployChaincode(user) {
         // Arguments to the initializing function
         args: ["a", "100", "b", "200"],
         // the location where the startup and HSBN store the certificates
-        certificatePath: isHSBN ? "/root/" : "/certs/blockchain-cert.pem"
+        certificatePath: isHSBN ? "/root/" : "/certs/peer/cert.pem"
     };
     deployRequest.chaincodePath = "chaincode_example02";
 
