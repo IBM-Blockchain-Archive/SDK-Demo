@@ -1,4 +1,8 @@
-certificate.pem
+certificate.pem**
+keyValStore-*
+
+# NPM Dependencies
+node_modules
 
 # IntelliJ
 .idea
