@@ -226,7 +226,11 @@ function invokeOnUser(user) {
     invokeTx.on('complete', function(results) {
         // Invoke transaction completed successfully
         console.log(util.format("\nSuccessfully completed chaincode invoke transaction: request=%j, response=%j", invokeRequest, results));
-        queryUser(user);
+
+        // Keep querying to test network connectivity
+        setInterval(function() {
+            queryUser(user);
+        }, 4000);
     });
     invokeTx.on('error', function(err) {
         // Invoke transaction submission failed
