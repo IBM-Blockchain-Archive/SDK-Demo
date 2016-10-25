@@ -43,6 +43,7 @@ process.argv.forEach(function(val, index, array) {
 var network;
 try {
     network = JSON.parse(fs.readFileSync(__dirname+'/ServiceCredentials.json', 'utf8'));
+    if (network.credentials) network = network.credentials;
 } catch (err) {
     console.log("ServiceCredentials.json is missing, Rerun once the file is available")
     process.exit();
@@ -56,7 +57,7 @@ var users = network.users;
 var isHSBN = peers[0].discovery_host.indexOf('zone') >= 0 ? true : false;
 var peerAddress = [];
 var network_id = Object.keys(network.ca);
-var ca_url = "grpc://" + network.ca[network_id].discovery_host + ":" + network.ca[network_id].discovery_port;
+var ca_url = "grpcs://" + network.ca[network_id].discovery_host + ":" + network.ca[network_id].discovery_port;
 
 // Configure the KeyValStore which is used to store sensitive keys.
 // This data needs to be located or accessible any time the users enrollmentID
@@ -70,11 +71,11 @@ var certFile = 'certificate.pem';
 var certUrl = network.cert;
 fs.access(certFile, function (err) {
     if (!err) {
-        //console.log("\nDeleting existing certificate ", certFile);
-        //fs.unlinkSync(certFile);
+        console.log("\nDeleting existing certificate ", certFile);
+        fs.unlinkSync(certFile);
     }
-    //downloadCertificate();
-    copyCertificate();
+    downloadCertificate();
+    //copyCertificate();
 });
 
 function downloadCertificate() {
@@ -113,7 +114,7 @@ function downloadCertificate() {
 }
 
 function copyCertificate() {
-    //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
+    fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
     fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync(__dirname+'/certificate.pem'));
 
     setTimeout(function() {
@@ -132,7 +133,7 @@ function enrollAndRegisterUsers() {
     // Adding all the peers to blockchain
     // this adds high availability for the client
     for (var i = 0; i < peers.length; i++) {
-        chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port, {
+        chain.addPeer("grpcs://" + peers[i].discovery_host + ":" + peers[i].discovery_port, {
             pem: cert
         });
         //chain.addPeer("grpc://" + peers[i].discovery_host + ":" + peers[i].discovery_port);
@@ -157,7 +158,7 @@ function enrollAndRegisterUsers() {
         var enrollName = "JohnDoe"; //creating a new user
         var registrationRequest = {
             enrollmentID: enrollName,
-            account: "bank_a",
+            account: "group1",
             affiliation: "00001"
         };
         chain.registerAndEnroll(registrationRequest, function(err, user) {
