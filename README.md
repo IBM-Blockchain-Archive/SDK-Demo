@@ -6,7 +6,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
 1. Create a directory (Workspace) folder where you will place the helloblockchain.js source code and node modules.  For example, `mkdir -p $HOME/Workspace`
 
-1. Go to Workspace folder and Install hfc v0.5.3 with the below command:
+1. Go to Workspace folder and Install hfc v0.5.4 with the below command:
 
 	```
 	cd $HOME/Workspace
@@ -61,7 +61,7 @@ Successfully queried  chaincode function: request={"chaincodeID":"9be0a0ed3f1788
 ***
 
 #Troubleshoot
-- Make sure you have `hfc@0.5.3` with either of the below commands from your workspace dir
+- Make sure you have `hfc@0.5.4` with either of the below commands from your workspace dir
   * npm list | grep hfc
   * npm list -g | grep hfc  # If installed using -g flag
 - if you get query failure error as below. 
