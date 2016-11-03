@@ -1,0 +1,35 @@
+{
+   "chainName":"hello-world",
+   "deployWaitTime":"60",
+   "hsbn_cert_path": "/root/",
+   "x86_cert_path": "/certs/peer/cert.pem",
+   "user": {
+	"username": "JohnDoe1",
+        "account" : "group1",
+        "affiliation" : "00001"
+   },
+   "deployRequest":{
+      "chaincodePath":"chaincode",
+      "functionName":"init",
+      "args":[
+         "a",
+         "100",
+         "b",
+         "200"
+      ]
+   },
+   "invokeRequest":{
+      "functionName":"invoke",
+      "args":[
+         "a",
+         "b",
+         "10"
+      ]
+   },
+   "queryRequest":{
+      "functionName":"query",
+      "args":[
+         "a"
+      ]
+   }
+}
