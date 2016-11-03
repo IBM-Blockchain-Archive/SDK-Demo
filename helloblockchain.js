@@ -6,7 +6,8 @@ const https = require('https');
 // Create a client blockchin.
 var chain = hfc.newChain("targetChain");
 
-// Creating an environment variable for ciphersuites
+// This list of suites is used by GRPC to establish secure connections.  GRPC is the protocol used by the SDK
+// to connect to the fabric.
 process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:' +
     'ECDHE-RSA-AES128-SHA256:' +
     'ECDHE-RSA-AES256-SHA384:' +
@@ -24,17 +25,17 @@ if (process.argv.length != 4) {
     console.log("node helloblockchain.js -c chaincode_example02");
     process.exit();
 }
-process.argv.forEach(function(val, index, array) {
+process.argv.forEach(function (val, index, array) {
     if (index == 2 && (!val || val != "-c")) {
-        console.log("Invalid arguments")
+        console.log("Invalid arguments");
         process.exit();
     } else if (index == 3) {
         if (!val) {
-            console.log("Invalid arguments")
+            console.log("Invalid arguments");
             process.exit();
         } else {
             // This is what done by NodeSdk when it looks for NodeSdk
-            ccPath = process.env["GOPATH"]+"/src/"+val;
+            ccPath = process.env["GOPATH"] + "/src/" + val;
         }
     }
 });
@@ -42,31 +43,33 @@ process.argv.forEach(function(val, index, array) {
 // Read and process the credentials.json
 var network;
 try {
-    network = JSON.parse(fs.readFileSync(__dirname+'/ServiceCredentials.json', 'utf8'));
+    network = JSON.parse(fs.readFileSync(__dirname + '/ServiceCredentials.json', 'utf8'));
+    if (network.credentials) network = network.credentials;
 } catch (err) {
     console.log("ServiceCredentials.json is missing, Rerun once the file is available")
     process.exit();
 }
 
-var peers = network.credentials.peers;
-var users = network.credentials.users;
+var peers = network.peers;
+var users = network.users;
 
 // Determining if we are running on a startup or HSBN network based on the url
 // of the discovery host name.  The HSBN will contain the string zone.
 var isHSBN = peers[0].discovery_host.indexOf('zone') >= 0 ? true : false;
 var peerAddress = [];
-var network_id = Object.keys(network.credentials.ca);
-var ca_url = "grpcs://" + network.credentials.ca[network_id].discovery_host + ":" + network.credentials.ca[network_id].discovery_port;
+var network_id = Object.keys(network.ca);
+var ca_url = "grpcs://" + network.ca[network_id].discovery_host + ":" + network.ca[network_id].discovery_port;
 
 // Configure the KeyValStore which is used to store sensitive keys.
 // This data needs to be located or accessible any time the users enrollmentID
 // perform any functions on the blockchain.  The users are not usable without
 // This data.
-var uuid = network_id[0].substring(0,8);
-chain.setKeyValStore(hfc.newFileKeyValStore(__dirname+'/keyValStore-'+uuid));
+var uuid = network_id[0].substring(0, 8);
+chain.setKeyValStore(hfc.newFileKeyValStore(__dirname + '/keyValStore-' + uuid));
+chain.setKeyValStore(hfc.newFileKeyValStore('/tmp/keyValStore'));
 
 var certFile = 'certificate.pem';
-var certUrl = network.credentials.cert;
+var certUrl = network.cert;
 fs.access(certFile, function (err) {
     if (!err) {
         console.log("\nDeleting existing certificate ", certFile);
@@ -84,25 +87,17 @@ function downloadCertificate() {
             console.log('\nDownload certificate failed, error code = %d', certFile, res.statusCode);
             process.exit();
         }
-        res.on('data', function(d) {
-                data += d;
+        res.on('data', function (d) {
+            data += d;
         });
         // event received when certificate download is completed
-        res.on('end', function() {
-	    if (process.platform != "win32") {
-		data += '\n';
-	    }
+        res.on('end', function () {
+            if (process.platform != "win32") {
+                data += '\n';
+            }
             fs.writeFileSync(certFile, data);
-	    copyCertificate();
-            /*if (process.platform == "win32") {
-                copyCertificate();
-            } else {
-                // Adding a new line character to the certificates
-                fs.appendFile(certFile, "\n", function (err) {
-                    if (err) throw err;
-                    copyCertificate();
-                });
-            }*/
+            copyCertificate();
+
         });
     }).on('error', function (e) {
         console.error(e);
@@ -111,16 +106,17 @@ function downloadCertificate() {
 }
 
 function copyCertificate() {
-    //fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath+'/certificate.pem'));
-    fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync(__dirname+'/certificate.pem'));
+    fs.createReadStream('certificate.pem').pipe(fs.createWriteStream(ccPath + '/certificate.pem'));
+    fs.writeFileSync(ccPath + '/certificate.pem', fs.readFileSync(__dirname + '/certificate.pem'));
 
-    setTimeout(function() {
+    setTimeout(function () {
         enrollAndRegisterUsers();
     }, 1000);
 }
 
 function enrollAndRegisterUsers() {
     var cert = fs.readFileSync(certFile);
+
     chain.setMemberServicesUrl(ca_url, {
         pem: cert
     });
@@ -128,6 +124,8 @@ function enrollAndRegisterUsers() {
     // Adding all the peers to blockchain
     // this adds high availability for the client
     for (var i = 0; i < peers.length; i++) {
+
+        // Peers on Bluemix require secured connections, hence 'grpcs://'
         chain.addPeer("grpcs://" + peers[i].discovery_host + ":" + peers[i].discovery_port, {
             pem: cert
         });
@@ -137,12 +135,11 @@ function enrollAndRegisterUsers() {
     console.log(chain.getPeers());
     console.log(chain.getMemberServices());
     console.log('-----------------------------------------------------------\n\n');
-    var testChaincodeID;
 
     // Enroll a 'admin' who is already registered because it is
     // listed in fabric/membersrvc/membersrvc.yaml with it's one time password.
-    chain.enroll(users[0].username, users[0].secret, function(err, admin) {
-        if (err) throw Error("\nERROR: failed to enroll admin : %s", err);
+    chain.enroll(users[0].enrollId, users[0].enrollSecret, function (err, admin) {
+        if (err) throw Error("\nERROR: failed to enroll admin : " + err);
 
         console.log("\nEnrolled admin sucecssfully");
 
@@ -155,7 +152,7 @@ function enrollAndRegisterUsers() {
             account: "group1",
             affiliation: "00001"
         };
-        chain.registerAndEnroll(registrationRequest, function(err, user) {
+        chain.registerAndEnroll(registrationRequest, function (err, user) {
             if (err) throw Error(" Failed to register and enroll " + enrollName + ": " + err);
 
             console.log("\nEnrolled and registered " + enrollName + " successfully");
@@ -163,7 +160,7 @@ function enrollAndRegisterUsers() {
             //setting timers for fabric waits
             chain.setDeployWaitTime(60);
             chain.setInvokeWaitTime(20);
-            console.log("\nDeploying chaincode ...")
+            console.log("\nDeploying chaincode ...");
             deployChaincode(user);
         });
     });
@@ -177,7 +174,7 @@ function deployChaincode(user) {
         // Arguments to the initializing function
         args: ["a", "100", "b", "200"],
         // the location where the startup and HSBN store the certificates
-        certificatePath: isHSBN ? "/root/" : "/certs/blockchain-cert.pem"
+        certificatePath: isHSBN ? "/root/" : "/certs/peer/cert.pem"
     };
     deployRequest.chaincodePath = "chaincode_example02";
 
@@ -185,7 +182,7 @@ function deployChaincode(user) {
     var deployTx = user.deploy(deployRequest);
 
     // Print the deploy results
-    deployTx.on('complete', function(results) {
+    deployTx.on('complete', function (results) {
         // Deploy request completed successfully
         testChaincodeID = results.chaincodeID;
         console.log("\nChaincode ID : " + testChaincodeID);
@@ -193,7 +190,7 @@ function deployChaincode(user) {
         invokeOnUser(user);
     });
 
-    deployTx.on('error', function(err) {
+    deployTx.on('error', function (err) {
         // Deploy request failed
         console.log(util.format("\nFailed to deploy chaincode: request=%j, error=%j", deployRequest, err));
     });
@@ -214,16 +211,20 @@ function invokeOnUser(user) {
     var invokeTx = user.invoke(invokeRequest);
 
     // Print the invoke results
-    invokeTx.on('submitted', function(results) {
+    invokeTx.on('submitted', function (results) {
         // Invoke transaction submitted successfully
         console.log(util.format("\nSuccessfully submitted chaincode invoke transaction: request=%j, response=%j", invokeRequest, results));
     });
-    invokeTx.on('complete', function(results) {
+    invokeTx.on('complete', function (results) {
         // Invoke transaction completed successfully
         console.log(util.format("\nSuccessfully completed chaincode invoke transaction: request=%j, response=%j", invokeRequest, results));
-        queryUser(user);
+
+        // Keep querying to test network connectivity
+        setInterval(function () {
+            queryUser(user);
+        }, 4000);
     });
-    invokeTx.on('error', function(err) {
+    invokeTx.on('error', function (err) {
         // Invoke transaction submission failed
         console.log(util.format("\nFailed to submit chaincode invoke transaction: request=%j, error=%j", invokeRequest, err));
     });
@@ -244,11 +245,11 @@ function queryUser(user) {
     var queryTx = user.query(queryRequest);
 
     // Print the query results
-    queryTx.on('complete', function(results) {
+    queryTx.on('complete', function (results) {
         // Query completed successfully
         console.log("\nSuccessfully queried  chaincode function: request=%j, value=%s", queryRequest, results.result.toString());
     });
-    queryTx.on('error', function(err) {
+    queryTx.on('error', function (err) {
         // Query failed
         console.log("\nFailed to query chaincode, function: request=%j, error=%j", queryRequest, err);
     });
