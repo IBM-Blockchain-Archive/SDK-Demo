@@ -2,15 +2,17 @@
 
 The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) sample program, which will deploy example02 chaincode and query/invoke it.
 
-1. Install npm, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
+1. Install npm if not installed already, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
 
-1. Create a directory (Workspace) folder where you will place the helloblockchain.js source code and node modules.  For example, `mkdir -p $HOME/Workspace`
+1. clone this repository
+   ```
+   git clone https://github.com/IBM-Blockchain/SDK-Demo.git
+   ```
 
-1. Go to Workspace folder and Install hfc v0.5.4 with the below command:
+1. Go to **SDK-Demo** folder and hfc package with the below command:
 
 	```
-	cd $HOME/Workspace
-	npm install hfc@0.5.4
+	npm install
 	```
 
 1. Create a Bluemix account, login and using the Catlog and select the Blockchain service.  Once in the service select either a `Starter Developer plan` or `High Security Business Network plan` (if authorized).  Now, click on `CREATE` and get the `Service Credentials` for the service.   Cut and Paste this json file and save it  as ServiceCredentials.json  in your local directory where [helloblockchain.js](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/helloblockchain.js)
@@ -18,32 +20,25 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 
      ![alt tag](servicecreds.png)
 
-1. Download [helloblockchain.js](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/helloblockchain.js) and save it your Workspace folder.
-   It looks something like below:
-
-   ![alt tag](workspace.png)
-
 1.  The node sdk will create the keyValStore directory and store cryptography data for each user that registers.
-
-1. Create chaincode folder under your $GOPATH.
-	- `mkdir -p $GOPATH/src/chaincode_example02`
-	- copy chaincode file [chaincode_example02.go](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/chaincode_example02.go) to folder `$GOPATH/src/chaincode_example02`.
-
-1. Download [vendor.zip](https://github.com/IBM-Blockchain/SDK-Demo/blob/master/vendor.zip) and similarly copy to the same folder - `$GOPATH/src/chaincode_example02` and **unzip**
-	- delete `vendor.zip`
-
-1. From Workspace folder run node program:
+    ```
+    WARNING: Once enrollment is successful you will see the crypto material under keyValStore-<network-id>
+             Don't delete this material till your network is deleted or reset.
+	     If you lost this cryptography data you can't communicate with Bluemix CA server, thus enrollment fails
+    ```
+     
+1. From SDK-Demo folder run node program:
 	```
-	node helloblockchain.js -c chaincode_example02
+	node helloblockchain.js
 	```
 	**To enable debug logs :**
 	```
-	DEBUG=hfc node helloblockchain.js -c chaincode_example02
+	DEBUG=hfc node helloblockchain.js
 	```
 
 	**To enable grpc traces:**
 	```
-	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js -c chaincode_example02
+	GRPC_TRACE=all DEBUG=hfc node helloblockchain.js
 	```
 
 Once Deploy/Invoke and Query are successful, we should see the below messages:
@@ -60,10 +55,14 @@ Successfully queried  chaincode function: request={"chaincodeID":"9be0a0ed3f1788
 
 ***
 
+####Note:
+chaincode is kept under **src/chaincode** folder, which also contains **vendor** folder , when you replaced the chaincode file **chaincode_example02.go** with your own chaincode make sure you retain the vendor folder, this is required for the peer to compile your chaincode and create container. Also if you have any dependent libs make sure you add them under vendor folder.
+
 #Troubleshoot
-- Make sure you have `hfc@0.5.4` with either of the below commands from your workspace dir
-  * npm list | grep hfc
+- Make sure you have `hfc@0.5.4` with either of the below commands from your SDK-Demo dir
+  * npm ls hfc
   * npm list -g | grep hfc  # If installed using -g flag
+
 - if you get query failure error as below. 
 
   ```
@@ -71,9 +70,11 @@ Failed to query chaincode, function: request={"chaincodeID":"9be0a0ed3f1788e8728
   ```
 
   increase deploy wait time
-  ex: `chain.setDeployWaitTime(80);`
+  ex: `chain.setDeployWaitTime(100);`
 
 - if you get a handshake error, try a different `grpc` version
   * You can get the version details by issuing either of the below commands
     - `npm list | grep grpc`
     - `npm list -g | grep grpc`
+    
+<<<< Need Matt/Andrew inputs to add different issues >>>>
