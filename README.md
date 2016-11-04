@@ -9,7 +9,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
    git clone https://github.com/IBM-Blockchain/SDK-Demo.git
    ```
 
-1. Go to **SDK-Demo** folder and hfc package with the below command:
+1. Go to **SDK-Demo** folder and install hfc package with the below command:
 
 	```
 	npm install
@@ -24,7 +24,7 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
     ```
     WARNING: Once enrollment is successful you will see the crypto material under keyValStore-<network-id>
              Don't delete this material till your network is deleted or reset.
-	     If you lost this cryptography data you can't communicate with Bluemix CA server, thus enrollment fails
+	     If you lost this cryptography data you can't communicate with Bluemix CA server, thus enrollment fails	
     ```
      
 1. From SDK-Demo folder run node program:
@@ -77,4 +77,4 @@ Failed to query chaincode, function: request={"chaincodeID":"9be0a0ed3f1788e8728
     - `npm list | grep grpc`
     - `npm list -g | grep grpc`
     
-<<<< Need Matt/Andrew inputs to add different issues >>>>
+<<<< Need inputs from Matt/Andrew to add various troubleshoot issues here... >>>>
