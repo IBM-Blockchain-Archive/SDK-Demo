@@ -1,7 +1,7 @@
 {
    "chainName":"hello-world",
    "deployWaitTime":"60",
-   "hsbn_cert_path": "/root/",
+   "hsbn_cert_path": "/certs/blockchain-cert.pem",
    "x86_cert_path": "/certs/peer/cert.pem",
    "user": {
 	"username": "JohnDoe1",

@@ -43,7 +43,7 @@ var users = network.users;
 
 // Determining if we are running on a startup or HSBN network based on the url
 // of the discovery host name.  The HSBN will contain the string zone.
-var isHSBN = peers[0].discovery_host.indexOf('zone') >= 0 ? true : false;
+var isHSBN = peers[0].discovery_host.indexOf('secure') >= 0 ? true : false;
 var network_id = Object.keys(network.ca);
 var ca_url = "grpcs://" + network.ca[network_id].discovery_host + ":" + network.ca[network_id].discovery_port;
 
@@ -57,7 +57,7 @@ var certFile = 'us.blockchain.ibm.com.cert';
 init()
 function init(){
 	if (isHSBN) {
-		certFile = 'zone.blockchain.ibm.com.cert';
+		certFile = '0.secure.blockchain.ibm.com.cert';//'zone.blockchain.ibm.com.cert';
 	}
 	fs.createReadStream(certFile).pipe(fs.createWriteStream(certPath));
 	enrollAndRegisterUsers();
@@ -80,10 +80,10 @@ function enrollAndRegisterUsers() {
         });
     }
 
-    console.log("\n\n------------- peers and caserver information: -------------");
+    /*console.log("\n\n------------- peers and caserver information: -------------");
     console.log(chain.getPeers());
     console.log(chain.getMemberServices());
-    console.log('-----------------------------------------------------------\n\n');
+    console.log('-----------------------------------------------------------\n\n');*/
 
     // Enroll a 'admin' who is already registered because it is
     // listed in fabric/membersrvc/membersrvc.yaml with it's one time password.
@@ -98,8 +98,8 @@ function enrollAndRegisterUsers() {
         var enrollName = config.user.username; //creating a new user
         var registrationRequest = {
             enrollmentID: enrollName,
-            account: config.user.account,
-            affiliation: config.user.affiliation
+            //account: config.user.account,
+            affiliation: config.user.account
         };
         chain.registerAndEnroll(registrationRequest, function (err, user) {
             if (err) throw Error(" Failed to register and enroll " + enrollName + ": " + err);

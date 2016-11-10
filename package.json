@@ -21,6 +21,6 @@
   },
   "license": "Apache-2.0",
   "dependencies": {
-    "hfc": "^0.5.4"
+    "hfc": "^0.6.5"
   }
 }
