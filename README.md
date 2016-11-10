@@ -59,7 +59,7 @@ Successfully queried  chaincode function: request={"chaincodeID":"9be0a0ed3f1788
 chaincode is kept under **src/chaincode** folder, which also contains **vendor** folder , when you replaced the chaincode file **chaincode_example02.go** with your own chaincode make sure you retain the vendor folder, this is required for the peer to compile your chaincode and create container. Also if you have any dependent libs make sure you add them under vendor folder.
 
 #Troubleshoot
-- Make sure you have `hfc@0.5.4` with either of the below commands from your SDK-Demo dir
+- Make sure you have `hfc@0.6.5` with either of the below commands from your SDK-Demo dir
   * npm ls hfc
   * npm list -g | grep hfc  #If installed using -g flag
 
@@ -74,7 +74,4 @@ Failed to query chaincode, function: request={"chaincodeID":"9be0a0ed3f1788e8728
   increase deploy wait time
   ex: `chain.setDeployWaitTime(100);`
 
-- if you get a handshake error, try a different `grpc` version
-  * You can get the version details by issuing either of the below commands
-    - `npm list | grep grpc`
-    - `npm list -g | grep grpc`
+
