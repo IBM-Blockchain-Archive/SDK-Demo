@@ -15,17 +15,6 @@ try {
 // Create a client blockchin.
 var chain = hfc.newChain(config.chainName);
 
-// This list of suites is used by GRPC to establish secure connections.  GRPC is the protocol used by the SDK
-// to connect to the fabric.
-process.env['GRPC_SSL_CIPHER_SUITES'] = 'ECDHE-RSA-AES128-GCM-SHA256:' +
-    'ECDHE-RSA-AES128-SHA256:' +
-    'ECDHE-RSA-AES256-SHA384:' +
-    'ECDHE-RSA-AES256-GCM-SHA384:' +
-    'ECDHE-ECDSA-AES128-GCM-SHA256:' +
-    'ECDHE-ECDSA-AES128-SHA256:' +
-    'ECDHE-ECDSA-AES256-SHA384:' +
-    'ECDHE-ECDSA-AES256-GCM-SHA384';
-
 var certPath = __dirname+"/src/"+config.deployRequest.chaincodePath+"/certificate.pem";
 
 // Read and process the credentials.json
@@ -54,10 +43,10 @@ var ca_url = "grpcs://" + network.ca[network_id].discovery_host + ":" + network.
 var uuid = network_id[0].substring(0, 8);
 chain.setKeyValStore(hfc.newFileKeyValStore(__dirname + '/keyValStore-' + uuid));
 var certFile = 'us.blockchain.ibm.com.cert';
-init()
+init();
 function init(){
 	if (isHSBN) {
-		certFile = '0.secure.blockchain.ibm.com.cert';//'zone.blockchain.ibm.com.cert';
+		certFile = '0.secure.blockchain.ibm.com.cert';
 	}
 	fs.createReadStream(certFile).pipe(fs.createWriteStream(certPath));
 	enrollAndRegisterUsers();
@@ -98,8 +87,7 @@ function enrollAndRegisterUsers() {
         var enrollName = config.user.username; //creating a new user
         var registrationRequest = {
             enrollmentID: enrollName,
-            //account: config.user.account,
-            affiliation: config.user.account
+            affiliation: config.user.affiliation
         };
         chain.registerAndEnroll(registrationRequest, function (err, user) {
             if (err) throw Error(" Failed to register and enroll " + enrollName + ": " + err);
@@ -124,7 +112,7 @@ function deployChaincode(user) {
         args: args,
 	chaincodePath : config.deployRequest.chaincodePath,
         // the location where the startup and HSBN store the certificates
-        certificatePath: isHSBN ? config.hsbn_cert_path : config.x86_cert_path
+        certificatePath: network.cert_path
     };
 
     // Trigger the deploy transaction
