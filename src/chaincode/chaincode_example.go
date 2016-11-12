@@ -16,12 +16,6 @@ limitations under the License.
 
 package main
 
-//WARNING - this chaincode's ID is hard-coded in chaincode_example04 to illustrate one way of
-//calling chaincode from a chaincode. If this example is modified, chaincode_example04.go has
-//to be modified as well with the new ID of chaincode_example02.
-//chaincode_example05 show's how chaincode ID can be passed in as a parameter instead of
-//hard-coding.
-
 import (
 	"errors"
 	"fmt"
@@ -33,7 +27,7 @@ import (
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
-
+var EVENT_COUNTER = "event_counter"
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	var A, B string    // Entities
 	var Aval, Bval int // Asset holdings
@@ -66,7 +60,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	if err != nil {
 		return nil, err
 	}
-
+        err = stub.PutState(EVENT_COUNTER, []byte("1"))
+	if err != nil {
+		return nil, err
+	}
 	return nil, nil
 }
 
@@ -90,7 +87,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	B = args[1]
 
 	// Get the state from the ledger
-	// TODO: will be nice to have a GetAllState call to ledger
 	Avalbytes, err := stub.GetState(A)
 	if err != nil {
 		return nil, errors.New("Failed to get state")
@@ -122,10 +118,27 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	}
 
 	err = stub.PutState(B, []byte(strconv.Itoa(Bval)))
+  	if err != nil {
+		return nil, err
+	}
+	//Event based
+        b, err := stub.GetState(EVENT_COUNTER)
+	if err != nil {
+		return nil, errors.New("Failed to get state")
+	}
+	noevts, _ := strconv.Atoi(string(b))
+
+	tosend := "Event Counter is " + string(b)
+
+	err = stub.PutState(EVENT_COUNTER, []byte(strconv.Itoa(noevts+1)))
 	if err != nil {
 		return nil, err
 	}
 
+	err = stub.SetEvent("evtsender", []byte(tosend))
+	if err != nil {
+		return nil, err
+        }
 	return nil, nil
 }
 
