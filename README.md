@@ -1,8 +1,9 @@
-#How to use hfc with the IBM Bluemix Blockchain beta service
+# How to use hfc with the IBM Bluemix Blockchain beta service
 
 The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-Sample/blob/master/helloblockchain.js) sample program, which will deploy example02 chaincode and query/invoke it.
 
 1. Install npm if not installed already, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
+   Install Node.js v6.2.0 - v6.10.0 (Node v7+ is not supported)
 
 1. clone this repository
    ```
@@ -55,10 +56,10 @@ Successfully queried  chaincode function: request={"chaincodeID":"9be0a0ed3f1788
 
 ***
 
-####Note:
+#### Note:
 chaincode is kept under **src/chaincode** folder, which also contains **vendor** folder , when you replaced the chaincode file **chaincode_example02.go** with your own chaincode make sure you retain the vendor folder, this is required for the peer to compile your chaincode and create container. Also if you have any dependent libs make sure you add them under vendor folder.
 
-#Troubleshoot
+# Troubleshoot
 - Make sure you have `hfc@0.6.5` with either of the below commands from your SDK-Demo dir
   * npm ls hfc
   * npm list -g | grep hfc  #If installed using -g flag
