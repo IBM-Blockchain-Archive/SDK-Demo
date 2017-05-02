@@ -5,6 +5,8 @@ The goal is to run [helloblockchain.js](https://github.com/ratnakar-asara/Node-S
 1. Install npm if not installed already, instructions are [here](http://blog.npmjs.org/post/85484771375/how-to-install-npm)
    Install Node.js v6.2.0 - v6.10.0 (Node v7+ is not supported)
 
+   The demo is not supported by the most current versions of Node.js (version 7 and beyond) and npm.  We recommend the LTS version of Node.js which includes npm. 
+
 1. clone this repository
    ```
    git clone https://github.com/IBM-Blockchain/SDK-Demo.git
